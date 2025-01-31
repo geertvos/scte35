@@ -1,12 +1,16 @@
-package com.nfl.scte35.decoder;
+package tv.mediadistillery.libs.scte35.decoder;
 
-import com.nfl.scte35.decoder.model.BreakDuration;
-import com.nfl.scte35.decoder.model.SpliceInfoSection;
-import com.nfl.scte35.decoder.model.SpliceInsert;
+import tv.mediadistillery.libs.decoder.model.BreakDuration;
+import tv.mediadistillery.libs.decoder.model.SpliceInfoSection;
+import tv.mediadistillery.libs.decoder.model.SpliceInsert;
+import tv.mediadistillery.libs.scte35.decoder.Scte35Decoder;
+
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
+
+import java.util.Base64;
 
 
 /**
@@ -44,25 +48,26 @@ public class Scte35DecoderTest {
      */
     @Test
     public void testExample1() throws Exception {
-        SpliceInfoSection spliceInfoSection = scte35Decoder.base64Decode("/DAlAAAAAAAAAP/wFAUAAAPof+//SVqZrP4Ae5igAAEBAQAAQcfnVA==");
-        assertEquals(252, spliceInfoSection.tableID);
-        assertEquals(3, spliceInfoSection.reserved1);
-        assertEquals(37, spliceInfoSection.sectionLength);
-        assertEquals(4095, spliceInfoSection.tier);
-        assertEquals(20, spliceInfoSection.spliceCommandLength);
-        SpliceInsert spliceInsert = spliceInfoSection.spliceInsert;
-        assertEquals(1000, spliceInsert.spliceEventID);
+        byte[] data = Base64.getDecoder().decode("/DAlAAAAAAAAAP/wFAUAAAPof+//SVqZrP4Ae5igAAEBAQAAQcfnVA==");
+        SpliceInfoSection spliceInfoSection = scte35Decoder.decode35(data);
+        assertEquals(252, spliceInfoSection.getTableID());
+        assertEquals(3, spliceInfoSection.getReserved1());
+        assertEquals(37, spliceInfoSection.getSectionLength());
+        assertEquals(4095, spliceInfoSection.getTier());
+        assertEquals(20, spliceInfoSection.getSpliceCommandLength());
+        SpliceInsert spliceInsert = spliceInfoSection.getSpliceInsert();
+        assertEquals(1000, spliceInsert.getSpliceEventID());
         //assertEquals(127,spliceInsert.reserved1); //Not set in decoder
-        assertEquals(1, spliceInsert.outOfNetworkIndicator);
+        assertEquals(1, spliceInsert.getOutOfNetworkIndicator());
         //assertEquals(15,spliceInsert.reserved2); //Not set in decoder
-        assertEquals(1, spliceInsert.uniqueProgramID);
-        assertEquals(1, spliceInsert.availNum);
-        assertEquals(1, spliceInsert.availsExpected);
-        BreakDuration breakDuration = spliceInsert.breakDuration;
-        assertEquals(1, breakDuration.autoReturn);
+        assertEquals(1, spliceInsert.getUniqueProgramID());
+        assertEquals(1, spliceInsert.getAvailNum());
+        assertEquals(1, spliceInsert.getAvailsExpected());
+        BreakDuration breakDuration = spliceInsert.getBreakDuration();
+        assertEquals(true, breakDuration.getAutoReturn());
         //assertEquals(63, breakDuration.reserved1); //Not set in decoder
-        assertEquals(8100000L, breakDuration.duration);
-        assertEquals(1103619924L, spliceInfoSection.CRC32);
+        assertEquals(8100000L, breakDuration.getDuration());
+        assertEquals(1103619924L, spliceInfoSection.getCRC32());
 
         System.out.println(spliceInfoSection);
     }
@@ -92,25 +97,26 @@ public class Scte35DecoderTest {
      */
     @Test
     public void testExample2() throws Exception {
-        SpliceInfoSection spliceInfoSection = scte35Decoder.base64Decode("/DAlAAAAAAAAAP/wFAUAACtnf+/+s9z9LP4Ae5igAAEBAQAAwWSPdQ==");
-        assertEquals(252, spliceInfoSection.tableID);
-        assertEquals(3, spliceInfoSection.reserved1);
-        assertEquals(37, spliceInfoSection.sectionLength);
-        assertEquals(4095, spliceInfoSection.tier);
-        assertEquals(20, spliceInfoSection.spliceCommandLength);
-        SpliceInsert spliceInsert = spliceInfoSection.spliceInsert;
-        assertEquals(11111, spliceInsert.spliceEventID);
+        byte[] data = Base64.getDecoder().decode("/DAlAAAAAAAAAP/wFAUAACtnf+/+s9z9LP4Ae5igAAEBAQAAwWSPdQ==");
+        SpliceInfoSection spliceInfoSection = scte35Decoder.decode35(data);
+        assertEquals(252, spliceInfoSection.getTableID());
+        assertEquals(3, spliceInfoSection.getReserved1());
+        assertEquals(37, spliceInfoSection.getSectionLength());
+        assertEquals(4095, spliceInfoSection.getTier());
+        assertEquals(20, spliceInfoSection.getSpliceCommandLength());
+        SpliceInsert spliceInsert = spliceInfoSection.getSpliceInsert();
+        assertEquals(11111, spliceInsert.getSpliceEventID());
         //assertEquals(127,spliceInsert.reserved1); //Not set in decoder
-        assertEquals(1, spliceInsert.outOfNetworkIndicator);
+        assertEquals(1, spliceInsert.getOutOfNetworkIndicator());
         //assertEquals(15,spliceInsert.reserved2); //Not set in decoder
-        assertEquals(1, spliceInsert.uniqueProgramID);
-        assertEquals(1, spliceInsert.availNum);
-        assertEquals(1, spliceInsert.availsExpected);
-        BreakDuration breakDuration = spliceInsert.breakDuration;
-        assertEquals(1, breakDuration.autoReturn);
+        assertEquals(1, spliceInsert.getUniqueProgramID());
+        assertEquals(1, spliceInsert.getAvailNum());
+        assertEquals(1, spliceInsert.getAvailsExpected());
+        BreakDuration breakDuration = spliceInsert.getBreakDuration();
+        assertEquals(true, breakDuration.getAutoReturn());
         //assertEquals(63, breakDuration.reserved1); //Not set in decoder
-        assertEquals(8100000L, breakDuration.duration);
-        assertEquals(-1050374283L, spliceInfoSection.CRC32);
+        assertEquals(8100000L, breakDuration.getDuration());
+        assertEquals(-1050374283L, spliceInfoSection.getCRC32());
 
         System.out.println(spliceInfoSection);
     }
@@ -141,25 +147,26 @@ public class Scte35DecoderTest {
      */
     @Test
     public void testExample3() throws Exception {
-        SpliceInfoSection spliceInfoSection = scte35Decoder.base64Decode("/DAlAAAAAAAAAP/wFAUAAAABf+/+LRQrAP4BI9MIAAEBAQAAfxV6SQ==");
-        assertEquals(252, spliceInfoSection.tableID);
-        assertEquals(3, spliceInfoSection.reserved1);
-        assertEquals(37, spliceInfoSection.sectionLength);
-        assertEquals(4095, spliceInfoSection.tier);
-        assertEquals(20, spliceInfoSection.spliceCommandLength);
-        SpliceInsert spliceInsert = spliceInfoSection.spliceInsert;
-        assertEquals(1, spliceInsert.spliceEventID);
+        byte[] data = Base64.getDecoder().decode("/DAlAAAAAAAAAP/wFAUAAAABf+/+LRQrAP4BI9MIAAEBAQAAfxV6SQ==");
+        SpliceInfoSection spliceInfoSection = scte35Decoder.decode35(data);
+        assertEquals(252, spliceInfoSection.getTableID());
+        assertEquals(3, spliceInfoSection.getReserved1());
+        assertEquals(37, spliceInfoSection.getSectionLength());
+        assertEquals(4095, spliceInfoSection.getTier());
+        assertEquals(20, spliceInfoSection.getSpliceCommandLength());
+        SpliceInsert spliceInsert = spliceInfoSection.getSpliceInsert();
+        assertEquals(1, spliceInsert.getSpliceEventID());
         //assertEquals(127,spliceInsert.reserved1); //Not set in decoder
-        assertEquals(1, spliceInsert.outOfNetworkIndicator);
+        assertEquals(1, spliceInsert.getOutOfNetworkIndicator());
         //assertEquals(15,spliceInsert.reserved2); //Not set in decoder
-        assertEquals(1, spliceInsert.uniqueProgramID);
-        assertEquals(1, spliceInsert.availNum);
-        assertEquals(1, spliceInsert.availsExpected);
-        BreakDuration breakDuration = spliceInsert.breakDuration;
-        assertEquals(1, breakDuration.autoReturn);
+        assertEquals(1, spliceInsert.getUniqueProgramID());
+        assertEquals(1, spliceInsert.getAvailNum());
+        assertEquals(1, spliceInsert.getAvailsExpected());
+        BreakDuration breakDuration = spliceInsert.getBreakDuration();
+        assertEquals(true, breakDuration.getAutoReturn());
         //assertEquals(63, breakDuration.reserved1); //Not set in decoder
-        assertEquals(19125000L, breakDuration.duration);
-        assertEquals(2132113993L, spliceInfoSection.CRC32);
+        assertEquals(19125000L, breakDuration.getDuration());
+        assertEquals(2132113993L, spliceInfoSection.getCRC32());
 
         System.out.println(spliceInfoSection);
     }

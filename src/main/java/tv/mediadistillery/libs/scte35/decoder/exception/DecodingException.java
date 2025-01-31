@@ -1,4 +1,4 @@
-package com.nfl.scte35.decoder.exception;
+package tv.mediadistillery.libs.scte35.decoder.exception;
 
 /**
  * Created by andres.aguilar on 6/17/16.

@@ -1,4 +1,4 @@
-package com.nfl.scte35.decoder.model;
+package tv.mediadistillery.libs.decoder.model;
 
 /**
  * Created by andres.aguilar on 6/16/16.

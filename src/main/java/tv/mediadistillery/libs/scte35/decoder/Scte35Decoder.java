@@ -1,15 +1,13 @@
 
-package com.nfl.scte35.decoder;
+package tv.mediadistillery.libs.scte35.decoder;
 
-import com.nfl.scte35.decoder.exception.DecodingException;
-import com.nfl.scte35.decoder.model.SegmentationDescriptor;
-import com.nfl.scte35.decoder.model.SpliceInfoSection;
-import com.nfl.scte35.decoder.model.SpliceInsert;
-import com.nfl.scte35.decoder.model.TimeSignal;
+import java.util.Base64;
 
-import org.apache.commons.codec.DecoderException;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.Hex;
+import tv.mediadistillery.libs.decoder.model.SegmentationDescriptor;
+import tv.mediadistillery.libs.decoder.model.SpliceInfoSection;
+import tv.mediadistillery.libs.decoder.model.SpliceInsert;
+import tv.mediadistillery.libs.decoder.model.TimeSignal;
+import tv.mediadistillery.libs.scte35.decoder.exception.DecodingException;
 
 /**
  * Implements a SCTE35 Decoding mechanism.
@@ -69,7 +67,7 @@ public final class Scte35Decoder {
         return (value & 0xFFFFFFFFL);
     }
 
-    private SpliceInfoSection decode35(byte[] b64) throws DecodingException {
+    public SpliceInfoSection decode35(byte[] b64) throws DecodingException {
         SpliceInfoSection spliceInfoSection = new SpliceInfoSection();
         SegmentationDescriptor[] seg = new SegmentationDescriptor[10];
         int i1;
@@ -92,47 +90,47 @@ public final class Scte35Decoder {
         for (int i = 0; i < b64.length; i++) {
             stemp += String.format("%02X", b64[i]);
         }
-        log(stemp + "\nBase64=" + Base64.encodeBase64String(b64) + "\n\n");
+        log(stemp + "\nBase64=" + Base64.getEncoder().encode(b64) + "\n\n");
 
         log("Decoded length = " + b64.length + "\n");
 
 
-        spliceInfoSection.tableID = b64[0] & 0x00ff;
-        if (spliceInfoSection.tableID != 0x0FC) {
+        spliceInfoSection.setTableID(b64[0] & 0x00ff);
+        if (spliceInfoSection.getTableID() != 0x0FC) {
             throw new DecodingException("Invalid Table ID != 0xFC");
         }
         log("Table ID = 0xFC\n");
 
-        spliceInfoSection.sectionSyntaxIndicator = (b64[1] >> 7) & 0x01;
-        if (spliceInfoSection.sectionSyntaxIndicator != 0) {
+        spliceInfoSection.setSectionSyntaxIndicator((b64[1] >> 7) & 0x01);
+        if (spliceInfoSection.getSectionSyntaxIndicator() != 0) {
             log("ERROR Long section used\n");
         } else {
             log("MPEG Short Section\n");
         }
 
-        spliceInfoSection.privateIndicator = (b64[1] >> 6) & 0x01;
-        if (spliceInfoSection.privateIndicator != 0) {
+        spliceInfoSection.setPrivateIndicator((b64[1] >> 6) & 0x01);
+        if (spliceInfoSection.getPrivateIndicator() != 0) {
             log("ERROR Private section signaled\n");
         } else {
             log("Not Private\n");
         }
 
-        spliceInfoSection.reserved1 = (b64[1] >> 4) & 0x03;
-        log(String.format("Reserved = 0x%x\n", spliceInfoSection.reserved1));
+        spliceInfoSection.setReserved1((b64[1] >> 4) & 0x03);
+        log(String.format("Reserved = 0x%x\n", spliceInfoSection.getReserved1()));
 
         i1 = b64[1] & 0x0f;
         i2 = b64[2] & 0x00ff;
-        spliceInfoSection.sectionLength = (i1 << 8) + i2;
-        log(("Section Length = " + spliceInfoSection.sectionLength + "\n"));
+        spliceInfoSection.setSectionLength((i1 << 8) + i2);
+        log(("Section Length = " + spliceInfoSection.getSectionLength() + "\n"));
 
-        spliceInfoSection.protocolVersion = b64[3];
-        log(("Protocol Version = " + spliceInfoSection.protocolVersion + "\n"));
+        spliceInfoSection.setProtocolVersion(b64[3]);
+        log(("Protocol Version = " + spliceInfoSection.getProtocolVersion() + "\n"));
 
-        spliceInfoSection.encryptedPacket = (b64[4] >> 7) & 0x01;
-        spliceInfoSection.encryptionAlgorithm = (b64[4] >> 1) & 0x3F;
-        if (spliceInfoSection.encryptedPacket != 0) {
+        spliceInfoSection.setEncryptedPacket((b64[4] >> 7) & 0x01);
+        spliceInfoSection.setEncryptionAlgorithm((b64[4] >> 1) & 0x3F);
+        if (spliceInfoSection.getEncryptedPacket() != 0) {
             log("Encrypted Packet\n");
-            log(String.format("Encryption Algorithm = 0x%x\n", spliceInfoSection.encryptionAlgorithm));
+            log(String.format("Encryption Algorithm = 0x%x\n", spliceInfoSection.getEncryptionAlgorithm()));
         } else {
             log("unencrypted Packet\n");
         }
@@ -142,29 +140,29 @@ public final class Scte35Decoder {
         l3 = b64[6] & 0x00ff;
         l4 = b64[7] & 0x00ff;
         l5 = b64[8] & 0x00ff;
-        spliceInfoSection.ptsAdjustment = (l1 << 32) + (l2 << 24) + (l3 << 16) + (l4 << 8) + l5;
-        log(String.format("PTS Adjustment = 0x%09x\n", spliceInfoSection.ptsAdjustment));
+        spliceInfoSection.setPtsAdjustment((l1 << 32) + (l2 << 24) + (l3 << 16) + (l4 << 8) + l5);
+        log(String.format("PTS Adjustment = 0x%09x\n", spliceInfoSection.getPtsAdjustment()));
 
-        spliceInfoSection.cwIndex = b64[9] & 0x00ff;
-        if (spliceInfoSection.encryptedPacket != 0) {
-            log(String.format("CW Index = 0x%x\n", spliceInfoSection.cwIndex));
+        spliceInfoSection.setCwIndex(b64[9] & 0x00ff);
+        if (spliceInfoSection.getEncryptedPacket() != 0) {
+            log(String.format("CW Index = 0x%x\n", spliceInfoSection.getCwIndex()));
         }
 
         i1 = b64[10] & 0x00ff;
         i2 = (b64[11] & 0x00f0) >> 4;
-        spliceInfoSection.tier = (i1 << 4) + i2;
-        log(String.format("Tier = 0x%x\n", spliceInfoSection.tier));
+        spliceInfoSection.setTier((i1 << 4) + i2);
+        log(String.format("Tier = 0x%x\n", spliceInfoSection.getTier()));
 
         i1 = b64[11] & 0x000f;
         i2 = b64[12] & 0x00ff;
-        spliceInfoSection.spliceCommandLength = (i1 << 8) + i2;
-        log(String.format("Splice Command Length = 0x%x\n", spliceInfoSection.spliceCommandLength));
+        spliceInfoSection.setSpliceCommandLength((i1 << 8) + i2);
+        log(String.format("Splice Command Length = 0x%x\n", spliceInfoSection.getSpliceCommandLength()));
 
-        spliceInfoSection.spliceCommandType = b64[13] & 0x00ff;
+        spliceInfoSection.setSpliceCommandType(b64[13] & 0x00ff);
         bufptr = 14;
         SpliceInsert spliceInsert = new SpliceInsert();
-        spliceInfoSection.spliceInsert = spliceInsert;
-        switch (spliceInfoSection.spliceCommandType) {
+        spliceInfoSection.setSpliceInsert(spliceInsert);
+        switch (spliceInfoSection.getSpliceCommandType()) {
             case SPLICE_NULL:
                 log("Splice Null\n");
                 break;
@@ -181,27 +179,27 @@ public final class Scte35Decoder {
                 bufptr++;
                 l4 = b64[bufptr] & 0x00ff;
                 bufptr++;
-                spliceInsert.spliceEventID = (int) (((l1 << 24) + (l2 << 16) + (l3 << 8) + l4) & 0x00ffffffff);
-                log(String.format("Splice Event ID = 0x%x\n", spliceInsert.spliceEventID));
+                spliceInsert.setSpliceEventID((int) (((l1 << 24) + (l2 << 16) + (l3 << 8) + l4) & 0x00ffffffff));
+                log(String.format("Splice Event ID = 0x%x\n", spliceInsert.getSpliceEventID()));
 
                 i1 = b64[bufptr] & 0x080;
                 bufptr++;
                 if (i1 != 0) {
-                    spliceInsert.spliceEventCancelIndicator = 1;
+                    spliceInsert.setSpliceEventCancelIndicator(1);
                     log("Splice Event Canceled\n");
                 } else {
-                    spliceInsert.spliceEventCancelIndicator = 0;
+                    spliceInsert.setSpliceEventCancelIndicator(0);
                 }
 
-                spliceInsert.outOfNetworkIndicator = (b64[bufptr] & 0x080) >> 7;
-                spliceInsert.programSpliceFlag = (b64[bufptr] & 0x040) >> 6;
-                spliceInsert.durationFlag = (b64[bufptr] & 0x020) >> 5;
-                spliceInsert.spliceImmediateFlag = (b64[bufptr] & 0x010) >> 4;
+                spliceInsert.setOutOfNetworkIndicator((b64[bufptr] & 0x080) >> 7);
+                spliceInsert.setProgramSpliceFlag((b64[bufptr] & 0x040) >> 6);
+                spliceInsert.setDurationFlag((b64[bufptr] & 0x020) >> 5);
+                spliceInsert.setSpliceImmediateFlag((b64[bufptr] & 0x010) >> 4);
                 bufptr++;
-                log("Flags OON=" + spliceInsert.outOfNetworkIndicator + " Prog=" + spliceInsert.programSpliceFlag
-                        + " Duration=" + spliceInsert.durationFlag + " Immediate=" + spliceInsert.spliceImmediateFlag + "\n");
+                log("Flags OON=" + spliceInsert.getOutOfNetworkIndicator() + " Prog=" + spliceInsert.getProgramSpliceFlag()
+                        + " Duration=" + spliceInsert.getDurationFlag() + " Immediate=" + spliceInsert.getSpliceImmediateFlag() + "\n");
 
-                if ((spliceInsert.programSpliceFlag == 1) && (spliceInsert.spliceImmediateFlag == 0)) {
+                if ((spliceInsert.getProgramSpliceFlag() == 1) && (spliceInsert.getSpliceImmediateFlag() == 0)) {
                     if ((b64[bufptr] & 0x080) != 0) {
                         // time specified
                         l1 = b64[bufptr] & 0x01;
@@ -213,15 +211,15 @@ public final class Scte35Decoder {
                         l4 = b64[bufptr] & 0x00ff;
                         bufptr++;
                         l5 = b64[bufptr] & 0x00ff;
-                        spliceInsert.sisp.ptsTime = (l1 << 32) + (l2 << 24) + (l3 << 16) + (l4 << 8) + l5;
-                        log(String.format("Splice time = 0x%09x\n", spliceInsert.sisp.ptsTime));
+                        spliceInsert.getSisp().ptsTime = (l1 << 32) + (l2 << 24) + (l3 << 16) + (l4 << 8) + l5;
+                        log(String.format("Splice time = 0x%09x\n", spliceInsert.getSisp().ptsTime));
                     }
                     bufptr++;
                 }
 
-                if (spliceInsert.durationFlag != 0) {
-                    spliceInsert.breakDuration.autoReturn = (b64[bufptr] & 0x080) >> 7;
-                    if (spliceInsert.breakDuration.autoReturn != 0) {
+                if (spliceInsert.getDurationFlag() != 0) {
+                    spliceInsert.getBreakDuration().setAutoReturn((b64[bufptr] & 0x080) >> 7 > 1);
+                    if (spliceInsert.getBreakDuration().getAutoReturn()) {
                         log("Auto Return\n");
                     }
                     l1 = b64[bufptr] & 0x01;
@@ -234,25 +232,25 @@ public final class Scte35Decoder {
                     bufptr++;
                     l5 = b64[bufptr] & 0x00ff;
                     bufptr++;
-                    spliceInsert.breakDuration.duration = (l1 << 32) + (l2 << 24) + (l3 << 16) + (l4 << 8) + l5;
-                    double bsecs = spliceInsert.breakDuration.duration;
+                    spliceInsert.getBreakDuration().setDuration((l1 << 32) + (l2 << 24) + (l3 << 16) + (l4 << 8) + l5);
+                    double bsecs = spliceInsert.getBreakDuration().getDuration();
                     bsecs /= 90000.0;
-                    log(String.format("break duration = 0x%09x = %f seconds\n", spliceInsert.breakDuration.duration, bsecs));
+                    log(String.format("break duration = 0x%09x = %f seconds\n", spliceInsert.getBreakDuration().getDuration(), bsecs));
                 }
                 i1 = b64[bufptr] & 0x00ff;
                 bufptr++;
                 i2 = b64[bufptr] & 0x00ff;
                 bufptr++;
-                spliceInsert.uniqueProgramID = (i1 << 8) + i2;
-                log("Unique Program ID = " + spliceInsert.uniqueProgramID + "\n");
+                spliceInsert.setUniqueProgramID((i1 << 8) + i2);
+                log("Unique Program ID = " + spliceInsert.getUniqueProgramID() + "\n");
 
-                spliceInsert.availNum = b64[bufptr] & 0x00ff;
+                spliceInsert.setAvailNum(b64[bufptr] & 0x00ff);
                 bufptr++;
-                log("Avail Num = " + spliceInsert.availNum + "\n");
+                log("Avail Num = " + spliceInsert.getAvailNum() + "\n");
 
-                spliceInsert.availsExpected = b64[bufptr] & 0x00ff;
+                spliceInsert.setAvailsExpected(b64[bufptr] & 0x00ff);
                 bufptr++;
-                log("Avails Expected = " + spliceInsert.availsExpected + "\n");
+                log("Avails Expected = " + spliceInsert.getAvailsExpected() + "\n");
 
                 break;
             case TIME_SIGNAL:
@@ -282,14 +280,14 @@ public final class Scte35Decoder {
                 log("Private Command\n");
                 break;
             default:
-                log(String.format("ERROR Unknown command = 0x%x\n", spliceInfoSection.spliceCommandType));
+                log(String.format("ERROR Unknown command = 0x%x\n", spliceInfoSection.getSpliceCommandType()));
                 // Unknown command, oops
                 break;
         }
 
-        if (spliceInfoSection.spliceCommandLength != 0x0fff) { // legacy check
-            if (bufptr != (spliceInfoSection.spliceCommandLength + 14)) {
-                log("ERROR decoded command length " + bufptr + " not equal to specified command length " + spliceInfoSection.spliceCommandLength + "\n");
+        if (spliceInfoSection.getSpliceCommandLength() != 0x0fff) { // legacy check
+            if (bufptr != (spliceInfoSection.getSpliceCommandLength() + 14)) {
+                log("ERROR decoded command length " + bufptr + " not equal to specified command length " + spliceInfoSection.getSpliceCommandLength() + "\n");
                 //Some kind of error, or unknown command
                 //bufptr = spliceInfoSection.spliceCommandLength + 14;
             }
@@ -299,13 +297,13 @@ public final class Scte35Decoder {
         bufptr++;
         i2 = b64[bufptr] & 0x00ff;
         bufptr++;
-        spliceInfoSection.descriptorLoopLength = (i1 << 8) + i2;
-        log("Descriptor Loop Length = " + spliceInfoSection.descriptorLoopLength + "\n");
+        spliceInfoSection.setDescriptorLoopLength((i1 << 8) + i2);
+        log("Descriptor Loop Length = " + spliceInfoSection.getDescriptorLoopLength() + "\n");
 
         desptr = bufptr;
 
-        if (spliceInfoSection.descriptorLoopLength > 0) {
-            while ((bufptr - desptr) < spliceInfoSection.descriptorLoopLength) {
+        if (spliceInfoSection.getDescriptorLoopLength() > 0) {
+            while ((bufptr - desptr) < spliceInfoSection.getDescriptorLoopLength()) {
                 int tag = b64[bufptr] & 0x00ff;
                 bufptr++;
                 int len = b64[bufptr] & 0x00ff;
@@ -603,16 +601,16 @@ public final class Scte35Decoder {
             }
         }
 
-        if (bufptr != (spliceInfoSection.descriptorLoopLength + desptr)) {
+        if (bufptr != (spliceInfoSection.getDescriptorLoopLength() + desptr)) {
             int dlen = bufptr - desptr;
-            log("ERROR decoded descriptor length " + dlen + " not equal to specified descriptor length " + spliceInfoSection.descriptorLoopLength + "\n");
-            bufptr = desptr + spliceInfoSection.descriptorLoopLength;
-            log("SKIPPING REST OF THE COMMAND!!!!!!\n");
+            log("ERROR decoded descriptor length " + dlen + " not equal to specified descriptor length " + spliceInfoSection.getDescriptorLoopLength() + "\n");
+            bufptr = desptr + spliceInfoSection.getDescriptorLoopLength();
+            log("SKIPPING REST OF THE COMMAND!\n");
         } else {
 
-            if (spliceInfoSection.encryptedPacket != 0) {
-                spliceInfoSection.alignmentStuffing = 0;
-                spliceInfoSection.eCRC32 = 0;
+            if (spliceInfoSection.getEncryptedPacket() != 0) {
+                spliceInfoSection.setAlignmentStuffing(0);
+                spliceInfoSection.seteCRC32(0);
             }
 
             l1 = b64[bufptr] & 0x00ff;
@@ -623,8 +621,8 @@ public final class Scte35Decoder {
             bufptr++;
             l4 = b64[bufptr] & 0x00ff;
             bufptr++;
-            spliceInfoSection.CRC32 = (int) (((l1 << 24) + (l2 << 16) + (l3 << 8) + l4) & 0x00ffffffff);
-            log(String.format("CRC32 = 0x%08x\n", spliceInfoSection.CRC32));
+            spliceInfoSection.setCRC32( (int) (((l1 << 24) + (l2 << 16) + (l3 << 8) + l4) & 0x00ffffffff));
+            log(String.format("CRC32 = 0x%08x\n", spliceInfoSection.getCRC32()));
         }
         log(String.format("calc CRC32 = 0x%08x --- Should = 0x00000000\n", crc32(b64, 0, bufptr)));
         return spliceInfoSection;
@@ -639,27 +637,6 @@ public final class Scte35Decoder {
         if (printlogs) {
             System.out.println(log);
         }
-    }
-
-
-    private SpliceInfoSection hexDecode(String hexin) throws DecodingException {
-        byte[] b64;
-        try {
-            b64 = Hex.decodeHex(hexin.toCharArray());
-        } catch (DecoderException e) {
-            throw new DecodingException("Decoding from Hex", e);
-        }
-        return decode35(b64);
-    }
-
-    public SpliceInfoSection base64Decode(String base64in) throws DecodingException {
-        byte[] b64 = Base64.decodeBase64(base64in);
-        String stemp = "";
-        for (int i = 0; i < b64.length; i++) {
-            stemp += String.format("%02X", b64[i]);
-        }
-
-        return hexDecode(stemp);
     }
 
 }
