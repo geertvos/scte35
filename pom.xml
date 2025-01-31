@@ -1,32 +1,33 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-<modelVersion>4.0.0</modelVersion>
-<groupId>tv.mediadistillery.libs</groupId>
-<artifactId>scte35</artifactId>
-<version>1.0.0</version>
-<packaging>jar</packaging>
-<name>scte35</name>
-<properties>
-<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-<testng.version>7.4.0</testng.version>
-</properties>
-<dependencies>
-<dependency>
-<groupId>org.testng</groupId>
-<artifactId>testng</artifactId>
-<version>${testng.version}</version>
-<scope>test</scope>
-</dependency>
-</dependencies>
-<build>
-<plugins>
-<plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-compiler-plugin</artifactId>
-    <version>3.13.0</version>
-    <configuration>
-        <release>11</release>
-    </configuration>
-</plugin>
-</plugins>
-</build>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>tv.mediadistillery.libs</groupId>
+	<artifactId>scte35</artifactId>
+	<version>1.0.0</version>
+	<description>Low level library to parse scte-35 data</description>
+	<packaging>jar</packaging>
+	<name>scte35</name>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<testng.version>7.4.0</testng.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>${testng.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-compiler-plugin</artifactId>
+			    <version>3.13.0</version>
+			    <configuration>
+			        <release>11</release>
+			    </configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
