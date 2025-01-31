@@ -1,4 +1,4 @@
-# SCETE 35 Decoder
+# SCTE-35 Decoder
 
 [![License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/nfl/scte35/blob/master/LICENSE)
 
@@ -6,11 +6,15 @@ Java library that handles decoding strings that follow the SCTE 35 Standard: htt
 
 This library was forked from https://github.com/nfl/scte35. 
 
-## Goals
-* Provide a simple interface that can be instatiated or injected
-* Fully define model
-* Move to maven
-* Add unit tests
+## Changes after forl ##
+* Moved to maven
+* Make it more Java and less C
+* Defined POJOs
+* Remove dependency on apache commons
+* Allow bytes as input 
+
+## Todo
+* Add more unit tests
 
 ## Integration
 This library is made available via maven repository. Alternatively it can be downloaded and included directly into a private maven repository or directly in the libs folder of the target app.
