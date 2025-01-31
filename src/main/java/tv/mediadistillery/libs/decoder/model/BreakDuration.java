@@ -8,7 +8,6 @@ import java.util.Objects;
 public class BreakDuration {
 
     private boolean autoReturn;
-    private int reserved1;
     private long duration;
 
     public boolean getAutoReturn() {
@@ -17,14 +16,6 @@ public class BreakDuration {
 
     public void setAutoReturn(boolean autoReturn) {
         this.autoReturn = autoReturn;
-    }
-
-    public int getReserved1() {
-        return reserved1;
-    }
-
-    public void setReserved1(int reserved1) {
-        this.reserved1 = reserved1;
     }
 
     public long getDuration() {
@@ -37,7 +28,7 @@ public class BreakDuration {
 
     @Override
     public int hashCode() {
-        return Objects.hash(autoReturn, duration, reserved1);
+        return Objects.hash(autoReturn, duration);
     }
 
     @Override
@@ -49,7 +40,7 @@ public class BreakDuration {
         if (getClass() != obj.getClass())
             return false;
         BreakDuration other = (BreakDuration) obj;
-        return autoReturn == other.autoReturn && duration == other.duration && reserved1 == other.reserved1;
+        return autoReturn == other.autoReturn && duration == other.duration;
     }
 
 }

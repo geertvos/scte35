@@ -8,13 +8,13 @@ import java.util.Objects;
 public class SpliceInsert {
 
     private int spliceEventID;
-    private int spliceEventCancelIndicator;
+    private boolean spliceEventCancelIndicator;
     private int reserved1;
-    private int outOfNetworkIndicator;
-    private int programSpliceFlag;
+    private boolean outOfNetworkIndicator;
+    private boolean programSpliceFlag;
     private SpliceTime sisp = new SpliceTime();
-    private int durationFlag;
-    private int spliceImmediateFlag;
+    private boolean durationFlag;
+    private boolean spliceImmediateFlag;
     private BreakDuration breakDuration = new BreakDuration();
     private int reserved2;
     private int uniqueProgramID;
@@ -29,11 +29,11 @@ public class SpliceInsert {
         this.spliceEventID = spliceEventID;
     }
 
-    public int getSpliceEventCancelIndicator() {
+    public boolean getSpliceEventCancelIndicator() {
         return spliceEventCancelIndicator;
     }
 
-    public void setSpliceEventCancelIndicator(int spliceEventCancelIndicator) {
+    public void setSpliceEventCancelIndicator(boolean spliceEventCancelIndicator) {
         this.spliceEventCancelIndicator = spliceEventCancelIndicator;
     }
 
@@ -45,19 +45,19 @@ public class SpliceInsert {
         this.reserved1 = reserved1;
     }
 
-    public int getOutOfNetworkIndicator() {
+    public boolean getOutOfNetworkIndicator() {
         return outOfNetworkIndicator;
     }
 
-    public void setOutOfNetworkIndicator(int outOfNetworkIndicator) {
+    public void setOutOfNetworkIndicator(boolean outOfNetworkIndicator) {
         this.outOfNetworkIndicator = outOfNetworkIndicator;
     }
 
-    public int getProgramSpliceFlag() {
+    public boolean getProgramSpliceFlag() {
         return programSpliceFlag;
     }
 
-    public void setProgramSpliceFlag(int programSpliceFlag) {
+    public void setProgramSpliceFlag(boolean programSpliceFlag) {
         this.programSpliceFlag = programSpliceFlag;
     }
 
@@ -69,19 +69,19 @@ public class SpliceInsert {
         this.sisp = sisp;
     }
 
-    public int getDurationFlag() {
+    public boolean getDurationFlag() {
         return durationFlag;
     }
 
-    public void setDurationFlag(int durationFlag) {
+    public void setDurationFlag(boolean durationFlag) {
         this.durationFlag = durationFlag;
     }
 
-    public int getSpliceImmediateFlag() {
+    public boolean getSpliceImmediateFlag() {
         return spliceImmediateFlag;
     }
 
-    public void setSpliceImmediateFlag(int spliceImmediateFlag) {
+    public void setSpliceImmediateFlag(boolean spliceImmediateFlag) {
         this.spliceImmediateFlag = spliceImmediateFlag;
     }
 

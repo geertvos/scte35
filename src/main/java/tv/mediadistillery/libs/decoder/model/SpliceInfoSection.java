@@ -8,18 +8,18 @@ import java.util.Objects;
 public class SpliceInfoSection {
 
     private int tableID;
-    private int sectionSyntaxIndicator;
-    private int privateIndicator;
+    private boolean sectionSyntaxIndicator;
+    private boolean privateIndicator;
     private int reserved1;
     private int sectionLength;
     private int protocolVersion;
-    private int encryptedPacket;
+    private boolean encryptedPacket;
     private int encryptionAlgorithm;
     private long ptsAdjustment;
     private int cwIndex;
     private int tier;
     private int spliceCommandLength;
-    private int spliceCommandType;
+    private SpliceCommandType spliceCommandType;
     private int descriptorLoopLength;
     private int alignmentStuffing;
     private int eCRC32;
@@ -34,20 +34,20 @@ public class SpliceInfoSection {
         this.tableID = tableID;
     }
 
-    public int getSectionSyntaxIndicator() {
+    public boolean getSectionSyntaxIndicator() {
         return sectionSyntaxIndicator;
     }
 
-    public void setSectionSyntaxIndicator(int sectionSyntaxIndicator) {
+    public void setSectionSyntaxIndicator(boolean sectionSyntaxIndicator) {
         this.sectionSyntaxIndicator = sectionSyntaxIndicator;
     }
 
-    public int getPrivateIndicator() {
+    public boolean hasPrivateIndicator() {
         return privateIndicator;
     }
 
-    public void setPrivateIndicator(int privateIndicator) {
-        this.privateIndicator = privateIndicator;
+    public void setPrivateIndicator(boolean value) {
+        this.privateIndicator = value;
     }
 
     public int getReserved1() {
@@ -74,11 +74,11 @@ public class SpliceInfoSection {
         this.protocolVersion = protocolVersion;
     }
 
-    public int getEncryptedPacket() {
+    public boolean getEncryptedPacket() {
         return encryptedPacket;
     }
 
-    public void setEncryptedPacket(int encryptedPacket) {
+    public void setEncryptedPacket(boolean encryptedPacket) {
         this.encryptedPacket = encryptedPacket;
     }
 
@@ -122,11 +122,11 @@ public class SpliceInfoSection {
         this.spliceCommandLength = spliceCommandLength;
     }
 
-    public int getSpliceCommandType() {
+    public SpliceCommandType getSpliceCommandType() {
         return spliceCommandType;
     }
 
-    public void setSpliceCommandType(int spliceCommandType) {
+    public void setSpliceCommandType(SpliceCommandType spliceCommandType) {
         this.spliceCommandType = spliceCommandType;
     }
 

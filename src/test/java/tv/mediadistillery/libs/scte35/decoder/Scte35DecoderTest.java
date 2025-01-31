@@ -58,7 +58,7 @@ public class Scte35DecoderTest {
         SpliceInsert spliceInsert = spliceInfoSection.getSpliceInsert();
         assertEquals(1000, spliceInsert.getSpliceEventID());
         //assertEquals(127,spliceInsert.reserved1); //Not set in decoder
-        assertEquals(1, spliceInsert.getOutOfNetworkIndicator());
+        assertEquals(true, spliceInsert.getOutOfNetworkIndicator());
         //assertEquals(15,spliceInsert.reserved2); //Not set in decoder
         assertEquals(1, spliceInsert.getUniqueProgramID());
         assertEquals(1, spliceInsert.getAvailNum());
@@ -107,7 +107,7 @@ public class Scte35DecoderTest {
         SpliceInsert spliceInsert = spliceInfoSection.getSpliceInsert();
         assertEquals(11111, spliceInsert.getSpliceEventID());
         //assertEquals(127,spliceInsert.reserved1); //Not set in decoder
-        assertEquals(1, spliceInsert.getOutOfNetworkIndicator());
+        assertEquals(true, spliceInsert.getOutOfNetworkIndicator());
         //assertEquals(15,spliceInsert.reserved2); //Not set in decoder
         assertEquals(1, spliceInsert.getUniqueProgramID());
         assertEquals(1, spliceInsert.getAvailNum());
@@ -157,7 +157,7 @@ public class Scte35DecoderTest {
         SpliceInsert spliceInsert = spliceInfoSection.getSpliceInsert();
         assertEquals(1, spliceInsert.getSpliceEventID());
         //assertEquals(127,spliceInsert.reserved1); //Not set in decoder
-        assertEquals(1, spliceInsert.getOutOfNetworkIndicator());
+        assertEquals(true, spliceInsert.getOutOfNetworkIndicator());
         //assertEquals(15,spliceInsert.reserved2); //Not set in decoder
         assertEquals(1, spliceInsert.getUniqueProgramID());
         assertEquals(1, spliceInsert.getAvailNum());
