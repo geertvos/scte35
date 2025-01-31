@@ -46,13 +46,15 @@ public final class Scte35Decoder {
             0xA6322BDF, 0xA2F33668, 0xBCB4666D, 0xB8757BDA, 0xB5365D03, 0xB1F740B4
     };
     
-    private boolean printlogs = false;
     private final LogCallback logCallback;
 
     public Scte35Decoder(LogCallback logCallback) {
         this.logCallback = logCallback;
     }
 
+    public Scte35Decoder() {
+        this(null);
+    }
 
     long crc32(byte[] b64, int startIdx, int endIdx) {
         int value = 0xFFFFFFFF;
