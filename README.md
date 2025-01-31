@@ -1,5 +1,3 @@
-<img src="http://static.nfl.com/static/content/public/static/img/logos/nfl-engineering-light.svg" width="300" />
-
 # SCETE 35 Decoder
 
 [![License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/nfl/scte35/blob/master/LICENSE)
