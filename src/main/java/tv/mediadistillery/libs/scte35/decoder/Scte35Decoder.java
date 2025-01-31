@@ -3,6 +3,7 @@ package tv.mediadistillery.libs.scte35.decoder;
 
 import java.util.Base64;
 
+import tv.mediadistillery.libs.decoder.log.LogCallback;
 import tv.mediadistillery.libs.decoder.model.SegmentTypeId;
 import tv.mediadistillery.libs.decoder.model.SegmentationDescriptor;
 import tv.mediadistillery.libs.decoder.model.SpliceCommandType;
@@ -16,12 +17,6 @@ import tv.mediadistillery.libs.scte35.decoder.exception.DecodingException;
  */
 public final class Scte35Decoder {
 
-    private static final int SPLICE_NULL = 0x00;
-    private static final int SPLICE_SCHEDULE = 0x04;
-    private static final int SPLICE_INSERT = 0x05;
-    private static final int TIME_SIGNAL = 0x06;
-    private static final int BANDWIDTH_RESERVATION = 0x07;
-    private static final int PRIVATE_COMMAND = 0x00ff;
     private static final int[] CrcTable = {
             0x00000000, 0x04C11DB7, 0x09823B6E, 0x0D4326D9, 0x130476DC, 0x17C56B6B, 0x1A864DB2, 0x1E475005, 0x2608EDB8, 0x22C9F00F,
             0x2F8AD6D6, 0x2B4BCB61, 0x350C9B64, 0x31CD86D3, 0x3C8EA00A, 0x384FBDBD, 0x4C11DB70, 0x48D0C6C7, 0x4593E01E, 0x4152FDA9,
@@ -50,10 +45,12 @@ public final class Scte35Decoder {
             0x89B8FD09, 0x8D79E0BE, 0x803AC667, 0x84FBDBD0, 0x9ABC8BD5, 0x9E7D9662, 0x933EB0BB, 0x97FFAD0C, 0xAFB010B1, 0xAB710D06,
             0xA6322BDF, 0xA2F33668, 0xBCB4666D, 0xB8757BDA, 0xB5365D03, 0xB1F740B4
     };
+    
     private boolean printlogs = false;
+    private final LogCallback logCallback;
 
-    public Scte35Decoder(boolean printlogs) {
-        this.printlogs = printlogs;
+    public Scte35Decoder(LogCallback logCallback) {
+        this.logCallback = logCallback;
     }
 
 
@@ -562,14 +559,9 @@ public final class Scte35Decoder {
         return spliceInfoSection;
     }
 
-    /**
-     * Extend this class and implement this method with an actual logger
-     *
-     * @param log statement to print
-     */
-    protected void log(String log) {
-        if (printlogs) {
-            System.out.println(log);
+    private void log(String log) {
+        if (logCallback != null) {
+            logCallback.log(log);
         }
     }
 
